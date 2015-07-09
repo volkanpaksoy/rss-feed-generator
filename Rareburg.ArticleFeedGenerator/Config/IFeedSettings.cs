@@ -10,6 +10,7 @@ namespace Rareburg.ArticleFeedGenerator
     public interface IFeedSettings
     {
         string FeedFormat { get; }
+        string FeedUrl { get; }
     }
 
     public class AppConfigFeedSettings : IFeedSettings
@@ -17,6 +18,11 @@ namespace Rareburg.ArticleFeedGenerator
         public string FeedFormat
         {
             get { return ConfigurationManager.AppSettings["Feed.Format"]; }
+        }
+
+        public string FeedUrl
+        {
+            get { return ConfigurationManager.AppSettings["Feed.Url"]; }
         }
     }
 }

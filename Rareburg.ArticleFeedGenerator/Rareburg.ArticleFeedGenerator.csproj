@@ -75,9 +75,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
     <None Include="Samples\all-articles.json" />
-    <None Include="Samples\items.json" />
     <None Include="Samples\rareburg.article.rss" />
-    <None Include="Samples\rareburg.item.rss" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
