@@ -12,6 +12,7 @@ namespace Rareburg.ArticleFeedGenerator
         IFeedServiceSettings GetFeedServiceSettings();
         IFeedSettings GetFeedSettings();
         IS3PublisherSettings GetS3PublisherSettings();
+        IOfflineClientSettings GetOfflineClientSettings();
     }
 
     public class AppConfigFactory : IConfigurationFactory
@@ -34,6 +35,11 @@ namespace Rareburg.ArticleFeedGenerator
         public IS3PublisherSettings GetS3PublisherSettings()
         {
             return new AppConfigS3PublisherSettings();
+        }
+
+        public IOfflineClientSettings GetOfflineClientSettings()
+        {
+            return new AppConfigOfflineClientSettings();
         }
     }
 }
