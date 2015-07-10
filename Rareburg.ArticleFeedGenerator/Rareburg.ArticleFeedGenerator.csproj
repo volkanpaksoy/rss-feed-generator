@@ -73,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="App.config.sample" />
     <None Include="packages.config" />
     <None Include="Samples\all-articles.json" />
     <None Include="Samples\rareburg.article.rss" />

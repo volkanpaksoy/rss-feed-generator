@@ -19,6 +19,7 @@ namespace Rareburg.ArticleFeedGenerator
             var rareburgClient = new OfflineRareburgClient(configFactory.GetOfflineClientSettings());
             var rareburgArticleFeedService = new RareburgArticleFeedService(configFactory.GetFeedServiceSettings());
             var publishService = new S3PublishService(configFactory.GetS3PublisherSettings());
+            // var publishService = new FilePublishService(configFactory.GetFilePublisherSettings());
 
             var feedGenerator = new ArticleFeedGenerator(rareburgClient, rareburgArticleFeedService, publishService, feedFormatterFactory);
             feedGenerator.Run();

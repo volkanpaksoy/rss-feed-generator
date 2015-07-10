@@ -37,6 +37,11 @@ namespace Rareburg.ArticleFeedGenerator
             return new AppConfigS3PublisherSettings();
         }
 
+        public IFilePublisherSettings GetFilePublisherSettings()
+        {
+            return new AppConfigFilePublisherSettings();
+        }
+
         public IOfflineClientSettings GetOfflineClientSettings()
         {
             return new AppConfigOfflineClientSettings();
