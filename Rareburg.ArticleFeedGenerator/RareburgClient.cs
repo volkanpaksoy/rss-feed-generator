@@ -37,9 +37,8 @@ namespace Rareburg.ArticleFeedGenerator
             var client = new RestClient(_apiEndPoint);
             var request = new RestRequest("/article/all", Method.GET);
             request.AddHeader("api-key", _apiKey);
-            request.AddHeader("Content-Type", "application/json; charset=utf-8");
+            request.AddHeader("Content-Type", "application/json");
             request.AddHeader("Accept-Charset", "UTF-8");
-
             var response = (RestResponse)client.Execute(request);
             var content = response.Content;
             var rareburgResponse = JsonConvert.DeserializeObject<Articles.Response>(content);
