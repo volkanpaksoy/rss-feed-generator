@@ -20,10 +20,12 @@ namespace Rareburg.ArticleFeedGenerator
     public class S3PublishService : IPublishService
     {
         IS3PublisherSettings _s3PublisherSettings;
+        IFeedSettings _feedSettings;
 
-        public S3PublishService(IS3PublisherSettings s3PublisherSettings)
+        public S3PublishService(IS3PublisherSettings s3PublisherSettings, IFeedSettings feedSettings)
         {
             _s3PublisherSettings = s3PublisherSettings;
+            _feedSettings = feedSettings;
         }
 
         public void Publish(SyndicationFeedFormatter feedFormatter)
@@ -54,7 +56,7 @@ namespace Rareburg.ArticleFeedGenerator
                     // Adding datetime for debugging purposess only. 
                     // In order for this to take effect change the config file to something like this
                     // <add key="S3Publisher.FileName" value="rareburg.articles.{0}.rss" />
-                    ContentType = "application/rss+xml",
+                    ContentType = string.Format("application/{0}+xml", _feedSettings.FeedFormat),
                     CannedACL = S3CannedACL.PublicRead,
                     InputStream = memStream
                 };
