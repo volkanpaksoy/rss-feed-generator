@@ -15,36 +15,8 @@ namespace Rareburg.ArticleFeedGenerator
         IOfflineClientSettings GetOfflineClientSettings();
     }
 
-    public class AppConfigFactory : IConfigurationFactory
-    {
-        public IApiSettings GetApiSettings()
-        {
-            return new AppConfigApiSettings();
-        }
+    
 
-        public IFeedServiceSettings GetFeedServiceSettings()
-        {
-            return new AppConfigFeedServiceSettings();
-        }
 
-        public IFeedSettings GetFeedSettings()
-        {
-            return new AppConfigFeedSettings();
-        }
 
-        public IS3PublisherSettings GetS3PublisherSettings()
-        {
-            return new AppConfigS3PublisherSettings();
-        }
-
-        public IFilePublisherSettings GetFilePublisherSettings()
-        {
-            return new AppConfigFilePublisherSettings();
-        }
-
-        public IOfflineClientSettings GetOfflineClientSettings()
-        {
-            return new AppConfigOfflineClientSettings();
-        }
-    }
 }
