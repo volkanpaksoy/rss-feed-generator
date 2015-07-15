@@ -29,22 +29,22 @@ namespace Rareburg.ArticleFeedGenerator
 
         public IFeedServiceSettings GetFeedServiceSettings()
         {
-            throw new NotImplementedException();
+            return new DynamoDBFeedServiceSettings(_configTable);
         }
 
         public IFeedSettings GetFeedSettings()
         {
-            throw new NotImplementedException();
+            return new DynamoDBFeedSettings(_configTable);
         }
 
         public IS3PublisherSettings GetS3PublisherSettings()
         {
-            throw new NotImplementedException();
+            return new DynamoDBS3PublisherSettings(_configTable);
         }
 
         public IOfflineClientSettings GetOfflineClientSettings()
         {
-            throw new NotImplementedException();
+            return new DynamoDBOfflineClientSettings(_configTable);
         }
     }
 }

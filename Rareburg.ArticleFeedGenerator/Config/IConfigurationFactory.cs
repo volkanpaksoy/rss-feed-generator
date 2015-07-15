@@ -14,9 +14,4 @@ namespace Rareburg.ArticleFeedGenerator
         IS3PublisherSettings GetS3PublisherSettings();
         IOfflineClientSettings GetOfflineClientSettings();
     }
-
-    
-
-
-
 }

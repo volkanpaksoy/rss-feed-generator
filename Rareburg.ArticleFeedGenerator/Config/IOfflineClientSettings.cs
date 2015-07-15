@@ -11,13 +11,4 @@ namespace Rareburg.ArticleFeedGenerator
     {
         string LocalFilePath { get; }
     }
-
-    public class AppConfigOfflineClientSettings : IOfflineClientSettings
-    {
-        public string LocalFilePath
-        {
-            get { return ConfigurationManager.AppSettings["Rareburg.LocalFilePath"]; }
-        }
-    }
-
 }

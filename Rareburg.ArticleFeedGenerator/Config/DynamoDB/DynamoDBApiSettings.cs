@@ -7,34 +7,21 @@ using System.Threading.Tasks;
 
 namespace Rareburg.ArticleFeedGenerator
 {
-    public class DynamoDBApiSettings : IApiSettings
+    public class DynamoDBApiSettings : DynamoDBSettingsBase, IApiSettings
     {
-        private Table _configTable;
-
         public DynamoDBApiSettings(Table configTable)
+            : base (configTable)
         {
-            _configTable = configTable;
         }
 
         public string ApiKey
         {
-            get
-            {
-                return GetValue("Rareburg.ApiKey");
-            }
+            get { return GetValue("Rareburg.ApiKey"); }
         }
 
         public string ApiEndPoint
         {
-            get
-            {
-                return GetValue("Rareburg.ApiEndPoint");
-            }
-        }
-
-        private string GetValue(string key)
-        {
-            return _configTable.GetItem(key).Values.First();
+            get { return GetValue("Rareburg.ApiEndPoint"); }
         }
     }
 }

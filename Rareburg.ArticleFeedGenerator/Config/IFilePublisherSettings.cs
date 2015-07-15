@@ -11,12 +11,4 @@ namespace Rareburg.ArticleFeedGenerator
     {
         string OutputFilePath { get; }
     }
-
-    public class AppConfigFilePublisherSettings : IFilePublisherSettings
-    {
-        public string OutputFilePath
-        {
-            get { return ConfigurationManager.AppSettings["FilePublisher.OutputFilePath"]; }
-        }
-    }
 }
