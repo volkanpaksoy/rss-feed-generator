@@ -15,7 +15,7 @@ namespace Rareburg.ArticleFeedGenerator
         private readonly string DYNAMODB_SECRET_KEY = "QZa6f0V543nQC75Q+XST0yeKk2Ak6K5jrF0yQ27v";
         private readonly string _tableName = "rareburg-article-feed-generator-config";
         protected Table _configTable;
-       
+        
         public DynamoDBConfigurationFactory()
         {
             AmazonDynamoDBClient dynmamoClient = new AmazonDynamoDBClient(DYNAMODB_ACCESS_KEY, DYNAMODB_SECRET_KEY, RegionEndpoint.EUWest1);
