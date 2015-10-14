@@ -11,21 +11,25 @@ namespace Rareburg.ArticleFeedGenerator
         IPublishService _publishService;
         IFeedDataClient _feedDataClient;
         IFeedService _feedService;
-        IFeedFormatterFactory _feedFormatterFactory;
+        IFeedSettings _feedSettings;
 
-        public ArticleFeedGenerator(IFeedDataClient feedDataClient, IFeedService feedService, IPublishService publishService, IFeedFormatterFactory feedFormatterFactory)
+        public ArticleFeedGenerator(IFeedDataClient feedDataClient, 
+            IFeedService feedService, 
+            IPublishService publishService,
+            IFeedSettings feedSettings)
         {
             _feedDataClient = feedDataClient;
             _feedService = feedService;
             _publishService = publishService;
-            _feedFormatterFactory = feedFormatterFactory;
+            _feedSettings = feedSettings;
         }
         
         public void Run()
         {
             var allArticles = _feedDataClient.GetAllArticles();
             var feed = _feedService.GetFeed(allArticles);
-            var feedFormatter = _feedFormatterFactory.CreateFeedFormatter(feed);
+            var feedFormatterFactory = FeedFormatterFactory.CreateFactory(feed, _feedSettings);
+            var feedFormatter = feedFormatterFactory.CreateFeedFormatter();
             _publishService.Publish(feedFormatter);
         }
     }

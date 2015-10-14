@@ -12,35 +12,58 @@ namespace Rareburg.ArticleFeedGenerator
 {
     public interface IFeedFormatterFactory
     {
-        SyndicationFeedFormatter CreateFeedFormatter(SyndicationFeed feed);
+        SyndicationFeedFormatter CreateFeedFormatter();
     }
 
-    public class FeedFormatterFactory : IFeedFormatterFactory
+    public class FeedFormatterFactory
     {
-        private IFeedSettings _feedSettings;
-
-        public FeedFormatterFactory(IFeedSettings feedSettings)
+        public static IFeedFormatterFactory CreateFactory(SyndicationFeed feed, IFeedSettings feedSettings)
         {
-            _feedSettings = feedSettings;
-        }
-        
-        public SyndicationFeedFormatter CreateFeedFormatter(SyndicationFeed feed)
-        {
-            string feedFormat = _feedSettings.FeedFormat;
+            string feedFormat = feedSettings.FeedFormat;
             switch (feedFormat.ToLower())
             {
-                case "atom": return new Atom10FeedFormatter(feed);
-                case "rss":
-                {
-                    var formatter = new Rss20FeedFormatter(feed);
-                    formatter.SerializeExtensionsAsAtom = false;
-                    XNamespace atom = "http://www.w3.org/2005/Atom";
-                    feed.AttributeExtensions.Add(new XmlQualifiedName("atom", XNamespace.Xmlns.NamespaceName), atom.NamespaceName);
-                    feed.ElementExtensions.Add(new XElement(atom + "link", new XAttribute("href", _feedSettings.FeedUrl), new XAttribute("rel", "self"), new XAttribute("type", "application/rss+xml")));
-                    return formatter;
-                }
+                case "atom": return new AtomFormatterFactory(feed);
+                case "rss": return new RssFormatterFactory(feed, feedSettings);
                 default: throw new ArgumentException("Unknown feed format");
             }
         }
     }
+
+    public class AtomFormatterFactory : IFeedFormatterFactory
+    {
+        SyndicationFeed _feed;
+
+        public AtomFormatterFactory(SyndicationFeed feed)
+        {
+            _feed = feed;
+        }
+
+        public SyndicationFeedFormatter CreateFeedFormatter()
+        {
+            return new Atom10FeedFormatter(_feed);
+        }
+    }
+
+    public class RssFormatterFactory : IFeedFormatterFactory
+    {
+        SyndicationFeed _feed;
+        IFeedSettings _feedSettings;
+
+        public RssFormatterFactory(SyndicationFeed feed, IFeedSettings feedSettings)
+        {
+            _feed = feed;
+            _feedSettings = feedSettings;
+        }
+
+        public SyndicationFeedFormatter CreateFeedFormatter()
+        {
+            var formatter = new Rss20FeedFormatter(_feed);
+            formatter.SerializeExtensionsAsAtom = false;
+            XNamespace atom = "http://www.w3.org/2005/Atom";
+            _feed.AttributeExtensions.Add(new XmlQualifiedName("atom", XNamespace.Xmlns.NamespaceName), atom.NamespaceName);
+            _feed.ElementExtensions.Add(new XElement(atom + "link", new XAttribute("href", _feedSettings.FeedUrl), new XAttribute("rel", "self"), new XAttribute("type", "application/rss+xml")));
+            return formatter;
+        }
+    }
+
 }
