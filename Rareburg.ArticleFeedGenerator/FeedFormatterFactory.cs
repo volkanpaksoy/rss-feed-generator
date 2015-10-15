@@ -10,14 +10,9 @@ using System.Xml.Linq;
 
 namespace Rareburg.ArticleFeedGenerator
 {
-    public interface IFeedFormatterFactory
+    public abstract class FeedFormatterFactory
     {
-        SyndicationFeedFormatter CreateFeedFormatter();
-    }
-
-    public class FeedFormatterFactory
-    {
-        public static IFeedFormatterFactory CreateFactory(SyndicationFeed feed, IFeedSettings feedSettings)
+        public static FeedFormatterFactory CreateFactory(SyndicationFeed feed, IFeedSettings feedSettings)
         {
             string feedFormat = feedSettings.FeedFormat;
             switch (feedFormat.ToLower())
@@ -27,9 +22,11 @@ namespace Rareburg.ArticleFeedGenerator
                 default: throw new ArgumentException("Unknown feed format");
             }
         }
+
+        public abstract SyndicationFeedFormatter CreateFeedFormatter();
     }
 
-    public class AtomFormatterFactory : IFeedFormatterFactory
+    public class AtomFormatterFactory : FeedFormatterFactory
     {
         SyndicationFeed _feed;
 
@@ -38,13 +35,13 @@ namespace Rareburg.ArticleFeedGenerator
             _feed = feed;
         }
 
-        public SyndicationFeedFormatter CreateFeedFormatter()
+        public override SyndicationFeedFormatter CreateFeedFormatter()
         {
             return new Atom10FeedFormatter(_feed);
         }
     }
 
-    public class RssFormatterFactory : IFeedFormatterFactory
+    public class RssFormatterFactory : FeedFormatterFactory
     {
         SyndicationFeed _feed;
         IFeedSettings _feedSettings;
@@ -55,7 +52,7 @@ namespace Rareburg.ArticleFeedGenerator
             _feedSettings = feedSettings;
         }
 
-        public SyndicationFeedFormatter CreateFeedFormatter()
+        public override SyndicationFeedFormatter CreateFeedFormatter()
         {
             var formatter = new Rss20FeedFormatter(_feed);
             formatter.SerializeExtensionsAsAtom = false;
@@ -65,5 +62,7 @@ namespace Rareburg.ArticleFeedGenerator
             return formatter;
         }
     }
+
+
 
 }
