@@ -12,15 +12,20 @@ namespace Rareburg.ArticleFeedGenerator
     {
         static void Main(string[] args)
         {
-            var configFactory = new AppConfigConfigurationFactory();
-            // var configFactory = new DynamoDBConfigurationFactory();
-            // var rareburgClient = new RareburgClient(configFactory.GetApiSettings());
-            var rareburgClient = new OfflineRareburgClient(configFactory.GetOfflineClientSettings());
+            IConfigurationFactory configFactory = new AppConfigConfigurationFactory();
+            // IConfigurationFactory configFactory = new DynamoDBConfigurationFactory();
 
-            var feedSettings = configFactory.GetFeedSettings();
-            var rareburgArticleFeedService = new RareburgArticleFeedService(configFactory.GetFeedServiceSettings());
-            var publishService = new S3PublishService(configFactory.GetS3PublisherSettings(), feedSettings);
+            IApiSettings apiSettings = configFactory.GetApiSettings();
+            IFeedSettings feedSettings = configFactory.GetFeedSettings();
+            IFeedServiceSettings feedServiceSettings = configFactory.GetFeedServiceSettings();
+            IS3PublisherSettings s3PublishSettings = configFactory.GetS3PublisherSettings();
+            IOfflineClientSettings offlineClientSettings = configFactory.GetOfflineClientSettings();
+
+            var rareburgClient = new OfflineRareburgClient(offlineClientSettings);
+            var rareburgArticleFeedService = new RareburgArticleFeedService(feedServiceSettings);
+            var publishService = new S3PublishService(s3PublishSettings, feedSettings);
             var feedGenerator = new ArticleFeedGenerator(rareburgClient, rareburgArticleFeedService, publishService, feedSettings);
+
             feedGenerator.Run();
         }
     }
