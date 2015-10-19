@@ -1,17 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel.Syndication;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Rareburg.ArticleFeedGenerator
 {
-    public class ArticleFeedGenerator
+    public abstract class ArticleFeedGenerator
     {
-        IPublishService _publishService;
-        IFeedDataClient _feedDataClient;
-        IFeedService _feedService;
-        IFeedSettings _feedSettings;
+        protected SyndicationFeed _feed;
+        private SyndicationFeedFormatter _feedFormatter;
+
+        protected IPublishService _publishService;
+        protected IFeedDataClient _feedDataClient;
+        protected IFeedService _feedService;
+        protected IFeedSettings _feedSettings;
 
         public ArticleFeedGenerator(IFeedDataClient feedDataClient, 
             IFeedService feedService, 
@@ -23,14 +27,19 @@ namespace Rareburg.ArticleFeedGenerator
             _publishService = publishService;
             _feedSettings = feedSettings;
         }
-        
+
+        public abstract SyndicationFeedFormatter CreateFeedFormatter();
+
         public void Run()
         {
             var allArticles = _feedDataClient.GetAllArticles();
-            var feed = _feedService.GetFeed(allArticles);
-            var feedFormatterFactory = FeedFormatterFactory.CreateFactory(feed, _feedSettings);
-            var feedFormatter = feedFormatterFactory.CreateFeedFormatter();
-            _publishService.Publish(feedFormatter);
+            _feed = _feedService.GetFeed(allArticles);
+            
+            _feedFormatter = CreateFeedFormatter();
+
+            _publishService.Publish(_feedFormatter);
         }
+
+
     }
 }

@@ -21,12 +21,26 @@ namespace Rareburg.ArticleFeedGenerator
             IS3PublisherSettings s3PublishSettings = configFactory.GetS3PublisherSettings();
             IOfflineClientSettings offlineClientSettings = configFactory.GetOfflineClientSettings();
 
-            var rareburgClient = new OfflineRareburgClient(offlineClientSettings);
-            var rareburgArticleFeedService = new RareburgArticleFeedService(feedServiceSettings);
+            var feedDataClient = new OfflineRareburgClient(offlineClientSettings);
+            var feedService = new RareburgArticleFeedService(feedServiceSettings);
             var publishService = new S3PublishService(s3PublishSettings, feedSettings);
-            var feedGenerator = new ArticleFeedGenerator(rareburgClient, rareburgArticleFeedService, publishService, feedSettings);
-
+            var feedGenerator = CreateFeedGenerator(feedDataClient, feedService, publishService, feedSettings);
             feedGenerator.Run();
+        }
+
+        private static ArticleFeedGenerator CreateFeedGenerator(
+            IFeedDataClient feedDataClient,
+            IFeedService feedService,
+            IPublishService publishService,
+            IFeedSettings feedSettings)
+        {
+            string feedFormat = feedSettings.FeedFormat;
+            switch (feedFormat.ToLower())
+            {
+                case "atom": return new AtomFeedGenerator(feedDataClient, feedService, publishService, feedSettings);
+                case "rss": return new RssFeedGenerator(feedDataClient, feedService, publishService, feedSettings);
+                default: throw new ArgumentException("Unknown feed format");
+            }
         }
     }
 }
