@@ -79,7 +79,7 @@
     <Compile Include="Config\IFilePublisherSettings.cs" />
     <Compile Include="Config\IFeedSettings.cs" />
     <Compile Include="Config\IApiSettings.cs" />
-    <Compile Include="RareburgArticleFeedService.cs" />
+    <Compile Include="FeedService.cs" />
     <Compile Include="GetArticlesResponse.cs" />
     <Compile Include="Config\IConfigurationFactory.cs" />
     <Compile Include="Program.cs" />
