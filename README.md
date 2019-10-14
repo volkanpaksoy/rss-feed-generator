@@ -6,17 +6,17 @@ Details about the project can be found in my blog post: http://volkanpaksoy.com/
 ## Configuration
 Create a copy of App.config.sample and rename it to App.config. Set the actual values like S3 keys, API keys etc.
 
-To use it offline, build the ArticleFeedGenerator class with OfflineRareburgClient and FilePublish Service:
+To use it offline, build the ArticleFeedGenerator class with OfflineFeedClient and FilePublish Service:
 
 ```chsarp
 var configFactory = new AppConfigFactory();
 
 var feedFormatterFactory = new FeedFormatterFactory(configFactory.GetFeedSettings());
-var rareburgClient = new OfflineRareburgClient(configFactory.GetOfflineClientSettings());
-var rareburgArticleFeedService = new RareburgArticleFeedService(configFactory.GetFeedServiceSettings());
+var apiClient = new OfflineApiClient(configFactory.GetOfflineClientSettings());
+var feedService = new FeedService(configFactory.GetFeedServiceSettings());
 var publishService = new FilePublishService(configFactory.GetFilePublisherSettings());
 
-var feedGenerator = new ArticleFeedGenerator(rareburgClient, rareburgArticleFeedService, publishService, feedFormatterFactory);
+var feedGenerator = new ArticleFeedGenerator(apiClient, feedService, publishService, feedFormatterFactory);
 feedGenerator.Run();
 ```
 
