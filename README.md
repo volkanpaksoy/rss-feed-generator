@@ -1,11 +1,9 @@
-# Rareburg Article Feed Generator
+# Feed Generator
 
-A simple tool to create RSS/Atom feed for [Rareburg Knowledge Base](https://www.rareburg.com/knowledge)
-
-### Implementation details
+## Implementation details
 Details about the project can be found in my blog post: http://volkanpaksoy.com/archive/2015/07/11/rss-feed-generation-with-csharp/
 
-### Configuration
+## Configuration
 Create a copy of App.config.sample and rename it to App.config. Set the actual values like S3 keys, API keys etc.
 
 To use it offline, build the ArticleFeedGenerator class with OfflineRareburgClient and FilePublish Service:
